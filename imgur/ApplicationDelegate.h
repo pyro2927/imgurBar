@@ -1,7 +1,7 @@
 #import "StatusItemView.h"
 #import "AlertController.h"
 
-#define API_KEY     @""
+#define API_KEY     @"imgur-api-key"
 
 @interface ApplicationDelegate : NSObject <NSApplicationDelegate, AlertControllerDelegate> {
     IBOutlet NSMenu *menu;
@@ -19,5 +19,6 @@
 
 - (void)toggleAlert;
 - (void)flashAlert:(NSString *) text;
++ (NSString *)getApiKey;
 
 @end

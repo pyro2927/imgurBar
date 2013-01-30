@@ -4,8 +4,7 @@
 
 @implementation ScreenshotController
 
-- (void)uploadImage:(NSData *)image
-{
+- (void)uploadImage:(NSData *)image {
     NSString *urlString = @"http://api.imgur.com/2/upload.json";
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:[NSURL URLWithString:urlString]];
@@ -28,7 +27,7 @@
     [body appendData:[[NSString stringWithFormat:@"--%@\r\n", boundary] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[[NSString stringWithFormat:@"Content-Disposition: form-data; name=\"key\"\r\n\r\n"] dataUsingEncoding:NSUTF8StringEncoding]];
     
-    [body appendData:[API_KEY dataUsingEncoding:NSUTF8StringEncoding]];
+    [body appendData:[[ApplicationDelegate getApiKey] dataUsingEncoding:NSUTF8StringEncoding]];
     [body appendData:[@"\r\n" dataUsingEncoding:NSUTF8StringEncoding]];
 
     // close form

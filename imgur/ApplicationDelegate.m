@@ -3,6 +3,7 @@
 #define ALERT_TIME 2.75
 
 void *kContextActiveAlert = &kContextActiveAlert;
+static NSString *apiKeyValue = @"";
 
 @implementation ApplicationDelegate
 
@@ -41,6 +42,8 @@ void *kContextActiveAlert = &kContextActiveAlert;
     [_statusItemView setImage:[NSImage imageNamed:@"Status"]];
     [_statusItemView setAlternateImage:[NSImage imageNamed:@"Status_invert"]];
     [_statusItemView setMenu:menu];
+    
+    apiKeyValue = [ApplicationDelegate getApiKey];
 }
 
 - (NSApplicationTerminateReply)applicationShouldTerminate:(NSApplication *)sender
@@ -88,5 +91,33 @@ void *kContextActiveAlert = &kContextActiveAlert;
     return self.statusItemView;
 }
 
+#pragma mark - Read Value from Plist
+
++ (NSString *) readValueFromPlist:(NSString *) plistName forKey:(NSString *) key {
+    NSString *path = [[NSBundle mainBundle] pathForResource: plistName ofType:@"plist"];
+    NSDictionary *dict = [[NSDictionary alloc]initWithContentsOfFile:path];
+    return dict[key];
+}
+
++ (void)terminate {
+    [NSApp performSelector:@selector(terminate:) withObject:nil afterDelay:0.0];
+}
+
++ (NSString *) getApiKey {
+    if([apiKeyValue isEqual: @""]) {
+        apiKeyValue = [self readValueFromPlist:API_KEY forKey:@"API_KEY"];
+    }
+    if ([apiKeyValue isEqualToString:@"API_KEY"]) {
+        NSAlert *alert = [NSAlert new];
+        [alert setAlertStyle:NSInformationalAlertStyle];
+        [alert setMessageText:@"API Key Missing"];
+        [alert setInformativeText:@"Add an API Key to imgur-api-key.plist"];
+        [alert beginSheetModalForWindow:nil
+                          modalDelegate:nil
+                         didEndSelector:@selector(terminate)
+                            contextInfo:nil];
+    }
+    return apiKeyValue;
+}
 
 @end
