@@ -1,5 +1,4 @@
 #import "StatusItemView.h"
-#import "ScreenshotController.h"
 
 @implementation StatusItemView
 
@@ -131,7 +130,6 @@
     if([NSBitmapImageRep canInitWithPasteboard:pb]){
         NSURL *url = [NSURL URLFromPasteboard:pb];
         NSData *data = [[NSData alloc] initWithContentsOfURL:url];
-        [[ScreenshotController alloc] uploadImage:data];
        
         return YES;
     }   
